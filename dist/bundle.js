@@ -3,20 +3,18 @@
 
   console.log('me like the way you work it. no diggity.')
 
-  const quakes = Rx.Observable.create(observer => {
-    window.eqfeed_callback = response => {
-      observer.onNext(response);
-      observer.onCompleted();
-    };
-
-    loadJSONP(QUAKE_URL);
-  }).flatMap(response => Rx.Observable.from(response.features))
-
-  quakes.subscribe(quake => {
-    const [ coord0, coord1 ] = quake.geometry.coordinates;
+  const quakes = Rx.DOM.jsonpRequest({
+    url: QUAKE_URL,
+    jsonpCallback: 'eqfeed_callback'
+  })
+  .flatMap(result => Rx.Observable.from(result.response.features))
+  .map(quake => {
+    const [ lng, lat ] = quake.geometry.coordinates;
     const size = quake.properties.mag * 10000;
 
-    L.circle([ coord1, coord0 ], size).addTo(map);
+    return { lat, lng, size };
   });
+
+  quakes.subscribe(quake => L.circle([ quake.lat, quake.lng ], quake.size).addTo(map));
 
 }());
