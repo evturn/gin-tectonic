@@ -1,15 +1,22 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('leaflet'), require('rx')) :
-  typeof define === 'function' && define.amd ? define(['leaflet', 'rx'], factory) :
-  (factory(global.L,global.rx));
-}(this, function (L,rx) { 'use strict';
+(function () {
+  'use strict';
 
-  L = 'default' in L ? L['default'] : L;
+  console.log('me like the way you work it. no diggity.')
 
-  var map = L.map('map').setView([33.858631, -118.279602], 7);
+  const quakes = Rx.Observable.create(observer => {
+    window.eqfeed_callback = response => {
+      const tremors = response.features;
+      tremors.forEach(tremor => observer.onNext(tremor));
+    };
 
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+    loadJSONP(QUAKE_URL);
+  });
 
-  console.log('me like the way you work it. no diggity.');
+  quakes.subscribe(quake => {
+    const [ coord0, coord1 ] = quake.geometry.coordinates;
+    const size = quake.properties.mag * 10000;
 
-}));
+    L.circle([ coord1, coord0 ], size).addTo(map);
+  });
+
+}());

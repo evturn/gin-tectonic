@@ -5,8 +5,11 @@ export default {
   dest: 'dist/bundle.js',
   plugins: [
     babel({
-      runtimeHelpers: true
+      runtimeHelpers: true,
+      include: 'node_modules/rx/**',
+      plugins: ['transform-runtime'],
+      presets: ['es2015-rollup']
     })
   ],
-  format: 'umd'
+  format: 'iife'
 };
