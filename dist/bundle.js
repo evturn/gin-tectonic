@@ -5,8 +5,7 @@
 
   const quakes = Rx.Observable.create(observer => {
     window.eqfeed_callback = response => {
-      const tremors = response.features;
-      tremors.forEach(tremor => observer.onNext(tremor));
+      response.features.forEach(tremor => observer.onNext(tremor));
     };
 
     loadJSONP(QUAKE_URL);
