@@ -22,9 +22,11 @@
     )
     .distinct(quake => quake.properties.code);
 
-    quakes.subscribe(quake => {
+  quakes.subscribe(quake => {
     const [ lng, lat ] = quake.geometry.coordinates;
     const size = quake.properties.mag * 10000;
+
+    console.log(quake);
 
     L.circle([ lat, lng ], size).addTo(map)
   });
