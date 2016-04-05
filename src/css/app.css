@@ -5,5 +5,15 @@ html, body {
 }
 
 #map {
-  height: 100%;
+  height: 80%;
+}
+
+#list {
+  color: #0033ff;
+  height: 20%;
+  width: 100%;
+}
+
+.leaflet-zoom-animated .leaflet-clickable {
+  transition: transform 1s;
 }

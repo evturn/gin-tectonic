@@ -14,7 +14,8 @@ function initialize() {
     .interval(5000)
     .flatMap(() => Rx.DOM.jsonpRequest(req).retry(3))
     .flatMap(result => Rx.Observable.from(result.response.features))
-    .distinct(quake => quake.properties.code);
+    .distinct(quake => quake.properties.code)
+    .share();
 
   quakes.subscribe(quake => {
     const [ lng, lat ] = quake.geometry.coordinates;
@@ -22,6 +23,23 @@ function initialize() {
 
     L.circle([ lat, lng ], size).addTo(map)
   });
+
+  const table = document.getElementById('quakes_info');
+  const overlay = document.getElementsByClassName('leaflet-zoom-animated');
+
+  quakes
+    .pluck('properties')
+    .map(makeRow)
+    .bufferWithTime(500)
+    .filter(rows => rows.length > 0)
+    .map(rows => {
+      const fragment = document.createDocumentFragment();
+
+      rows.forEach(row => fragment.appendChild(row));
+
+      return fragment;
+    })
+    .subscribe(fragment => table.appendChild(fragment));
 }
 
 function makeRow(props) {
