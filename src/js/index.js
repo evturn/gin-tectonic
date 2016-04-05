@@ -12,12 +12,8 @@ const req = {
 function initialize() {
   const quakes = Rx.Observable
     .interval(5000)
-    .flatMap(() =>
-      Rx.DOM.jsonpRequest(req).retry(3)
-    )
-    .flatMap(result =>
-      Rx.Observable.from(result.response.features)
-    )
+    .flatMap(() => Rx.DOM.jsonpRequest(req).retry(3))
+    .flatMap(result => Rx.Observable.from(result.response.features))
     .distinct(quake => quake.properties.code);
 
   quakes.subscribe(quake => {
