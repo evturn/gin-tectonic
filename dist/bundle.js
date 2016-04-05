@@ -13,6 +13,9 @@
   };
 
   function initialize() {
+    const codeLayers = {};
+    const quakeLayer = L.layerGroup([]).addTo(map);
+
     const quakes = Rx.Observable
       .interval(5000)
       .flatMap(() => Rx.DOM.jsonpRequest(req).retry(3))
@@ -23,8 +26,10 @@
     quakes.subscribe(quake => {
       const [ lng, lat ] = quake.geometry.coordinates;
       const size = quake.properties.mag * 10000;
+      const circle = L.circle([ lat, lng ], size).addTo(map);
 
-      L.circle([ lat, lng ], size).addTo(map)
+      quakeLayer.addLayer(circle);
+      codeLayers[quake.id] = quakeLayer.getLayerId(circle);
     });
 
     const table = document.getElementById('quakes_info');

@@ -9,10 +9,18 @@ const req = {
   jsonpCallback: 'eqfeed_callback'
 };
 
-function initialize() {
-  const codeLayers = {};
-  const quakeLayer = L.layerGroup([]).addTo(map);
+const codeLayers = {};
+const quakeLayer = L.layerGroup([]).addTo(map);
+const identity = Rx.helpers.identity;
 
+function isHovering(element) {
+  const over = Rx.DOM.mouseover(element).map(identity(true));
+  const out = Rx.DOM.mouseout(element).map(identity(false));
+
+  return over.merge(out);
+}
+
+function initialize() {
   const quakes = Rx.Observable
     .interval(5000)
     .flatMap(() => Rx.DOM.jsonpRequest(req).retry(3))
