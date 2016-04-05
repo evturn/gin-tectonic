@@ -24,4 +24,21 @@ function initialize() {
   });
 }
 
+function makeRow(props) {
+  const { net, code, place, mag, time } = props;
+  const date = new Date(time);
+  const row = document.createElement('tr');
+
+  row.id = net + code;
+
+  [place, mag, date.toString()].forEach(text => {
+    const cell = document.createElement('td');
+
+    cell.textContent = text;
+    row.appendChild(cell);
+  });
+
+  return row;
+}
+
 Rx.DOM.ready().subscribe(initialize);
