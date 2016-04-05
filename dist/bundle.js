@@ -12,23 +12,25 @@
     jsonpCallback: 'eqfeed_callback'
   };
 
-  const quakes = Rx.Observable
-    .interval(5000)
-    .flatMap(() =>
-      Rx.DOM.jsonpRequest(req).retry(3)
-    )
-    .flatMap(result =>
-      Rx.Observable.from(result.response.features)
-    )
-    .distinct(quake => quake.properties.code);
+  function initialize() {
+    const quakes = Rx.Observable
+      .interval(5000)
+      .flatMap(() =>
+        Rx.DOM.jsonpRequest(req).retry(3)
+      )
+      .flatMap(result =>
+        Rx.Observable.from(result.response.features)
+      )
+      .distinct(quake => quake.properties.code);
 
-  quakes.subscribe(quake => {
-    const [ lng, lat ] = quake.geometry.coordinates;
-    const size = quake.properties.mag * 10000;
+    quakes.subscribe(quake => {
+      const [ lng, lat ] = quake.geometry.coordinates;
+      const size = quake.properties.mag * 10000;
 
-    console.log(quake);
+      L.circle([ lat, lng ], size).addTo(map)
+    });
+  }
 
-    L.circle([ lat, lng ], size).addTo(map)
-  });
+  Rx.DOM.ready().subscribe(initialize);
 
 }());
