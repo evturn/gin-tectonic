@@ -3,18 +3,18 @@
 
   console.log('me like the way you work it. no diggity.')
 
-  const map = L.map('map').setView([33.858631, -118.279602], 7);
-
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
-
+  const MAP = L.map('map').setView([33.858631, -118.279602], 7);
   const req = {
-    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/' + 'summary/all_day.geojsonp',
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojsonp',
     jsonpCallback: 'eqfeed_callback'
   };
+
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(MAP);
+
   const COLOR_PRIMARY ='#0000ff';
   const COLOR_HOVER = '#ff0000';
   const codeLayers = {};
-  const quakeLayer = L.layerGroup([]).addTo(map);
+  const quakeLayer = L.layerGroup([]).addTo(MAP);
   const table = document.getElementById('quakes_info');
 
   function makeRow(props) {
@@ -53,7 +53,7 @@
     quakes.subscribe(quake => {
       const [ lng, lat ] = quake.geometry.coordinates;
       const size = quake.properties.mag * 10000;
-      const circle = L.circle([ lat, lng ], size).addTo(map);
+      const circle = L.circle([ lat, lng ], size).addTo(MAP);
 
       quakeLayer.addLayer(circle);
       codeLayers[quake.id] = quakeLayer.getLayerId(circle);
@@ -74,7 +74,7 @@
       .subscribe(row => {
          const circle = quakeLayer.getLayer(codeLayers[row.id]);
 
-         map.panTo(circle.getLatLng());
+         MAP.panTo(circle.getLatLng());
         });
 
     quakes
