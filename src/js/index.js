@@ -21,6 +21,14 @@ function isHovering(element) {
   return over.merge(out);
 }
 
+function getRowFromEvent(event) {
+  return Rx.Observable
+    .fromEvent(table, event)
+    .filter(e => e.target.tagName === 'TD' && e.target.parentNode.id.length)
+    .pluck('target', 'parentNode')
+    .distinctUntilChanged();
+}
+
 function makeRow(props) {
   const { net, code, place, mag, time } = props;
   const date = new Date(time);
