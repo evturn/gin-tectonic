@@ -13,20 +13,13 @@ const COLOR_HOVER = '#ff0000';
 const codeLayers = {};
 const quakeLayer = L.layerGroup([]).addTo(map);
 const identity = Rx.helpers.identity;
+const table = document.getElementById('quakes_info');
 
 function isHovering(element) {
   const over = Rx.DOM.mouseover(element).map(identity(true));
   const out = Rx.DOM.mouseout(element).map(identity(false));
 
   return over.merge(out);
-}
-
-function getRowFromEvent(event) {
-  return Rx.Observable
-    .fromEvent(table, event)
-    .filter(e => e.target.tagName === 'TD' && e.target.parentNode.id.length)
-    .pluck('target', 'parentNode')
-    .distinctUntilChanged();
 }
 
 function makeRow(props) {
@@ -46,6 +39,14 @@ function makeRow(props) {
   return row;
 }
 
+function getRowFromEvent(event) {
+  return Rx.Observable
+    .fromEvent(table, event)
+    .filter(e => e.target.tagName === 'TD' && e.target.parentNode.id.length)
+    .pluck('target', 'parentNode')
+    .distinctUntilChanged();
+}
+
 function initialize() {
   const quakes = Rx.Observable
     .interval(5000)
@@ -63,8 +64,23 @@ function initialize() {
     codeLayers[quake.id] = quakeLayer.getLayerId(circle);
   });
 
-  const table = document.getElementById('quakes_info');
-  const overlay = document.getElementsByClassName('leaflet-zoom-animated');
+  getRowFromEvent('mouseover')
+    .pairwise()
+    .subscribe(rows => {
+      const [ prev, curr ] = rows;
+      const prevCircle = quakeLayer.getLayer(codeLayers[prev.id]);
+      const currCircle = quakeLayer.getLayer(codeLayers[curr.id]);
+
+      prevCircle.setStyle({ color: COLOR_PRIMARY });
+      currCircle.setStyle({ color: COLOR_HOVER });
+    });
+
+  getRowFromEvent('click')
+    .subscribe(row => {
+       const circle = quakeLayer.getLayer(codeLayers[row.id]);
+
+       map.panTo(circle.getLatLng());
+      });
 
   quakes
     .pluck('properties')
@@ -76,25 +92,9 @@ function initialize() {
 
       rows.forEach(row => fragment.appendChild(row));
 
-      return { rows, fragment };
+      return fragment;
     })
-    .subscribe(
-      props => {
-        props.rows.forEach(row => {
-          const circle = quakeLayer.getLayer(codeLayers[row.id]);
-
-          isHovering(row)
-            .subscribe(
-              hovering => circle.setStyle({ color: hovering ? COLOR_HOVER : COLOR_PRIMARY })
-            );
-
-          Rx.DOM.click(row)
-            .subscribe(() => map.panTo(circle.getLatLng()));
-        });
-
-        table.appendChild(props.fragment);
-      }
-    );
+    .subscribe(fragment => table.appendChild(fragment));
 }
 
 Rx.DOM.ready().subscribe(initialize);
