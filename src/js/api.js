@@ -7,3 +7,5 @@ export const req = {
 };
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(MAP);
+
+export const quakeLayer = L.layerGroup([]).addTo(MAP);

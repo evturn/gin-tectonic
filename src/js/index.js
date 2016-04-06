@@ -1,20 +1,18 @@
-import { MAP, req } from './api';
+import { MAP, req, quakeLayer } from './api';
+import { COLOR_HOVER, COLOR_PRIMARY } from './constants';
 
-const COLOR_PRIMARY ='#0000ff';
-const COLOR_HOVER = '#ff0000';
 const codeLayers = {};
-const quakeLayer = L.layerGroup([]).addTo(MAP);
-const identity = Rx.helpers.identity;
 const table = document.getElementById('quakes_info');
 
 function makeRow(props) {
   const { net, code, place, mag, time } = props;
   const date = new Date(time);
+  const columns = [place, mag, date.toString()];
   const row = document.createElement('tr');
 
   row.id = net + code;
 
-  [place, mag, date.toString()].forEach(text => {
+  columns.forEach(text => {
     const cell = document.createElement('td');
 
     cell.textContent = text;
@@ -65,7 +63,7 @@ function initialize() {
        const circle = quakeLayer.getLayer(codeLayers[row.id]);
 
        MAP.panTo(circle.getLatLng());
-      });
+    });
 
   quakes
     .pluck('properties')
