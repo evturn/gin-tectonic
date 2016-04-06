@@ -59,6 +59,6 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new WriteFilePlugin(),
-    new ExtractTextPlugin('dist/app.css')
+    new ExtractTextPlugin('app.css')
   ]
 }

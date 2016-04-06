@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Table from './Table';
+import '../../css/app.less';
 
 class App extends Component {
   render() {
