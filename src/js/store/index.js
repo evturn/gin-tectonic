@@ -18,6 +18,9 @@ const middleware = compose(
   applyMiddleware(thunkmasterFlex, logger())
 );
 
-export default function configureStore(initialState) {
-  return createStore(rootReducer, initialState, middleware);
-}
+const initialState = {
+  codeLayers: [],
+  quakes: []
+};
+
+export default createStore(rootReducer, initialState, middleware);

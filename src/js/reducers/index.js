@@ -1,6 +1,4 @@
-export default function quake(state = {
-  codeLayers: []
-}, action) {
+export default function quake(state = {}, action) {
   switch (action.type) {
     case 'DRAW_QUAKE':{
       const { quake, quakeLayer } = action.payload;
