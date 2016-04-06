@@ -1,6 +1,6 @@
 import { MAP, req, quakeLayer } from './api';
 import { COLOR_HOVER, COLOR_PRIMARY } from './constants';
-// import App from './components/App';
+import App from './components/App';
 
 const codeLayers = {};
 const table = document.getElementById('data-list');
