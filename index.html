@@ -10,18 +10,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs-dom/7.0.3/rx.dom.js"></script>
 </head>
 <body>
-
   <div id="map"><!-- DON'T LOOK AT MY FACE --></div>
-  <table id="list">
-    <thead>
-      <tr>
-        <th>Location</th>
-        <th>Magnitude</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody id="quakes_info"></tbody>
-  </table>
+  <div id="root"></div>
+  <div id="eq-data">
+    <ul id="data-header">
+      <li>Location</li>
+      <li>Magnitude</li>
+      <li>Time</li>
+    </ul>
+    <div id="data-list"></div>
+  </div>
   <script src="dist/bundle.js"></script>
 </body>
 </html>

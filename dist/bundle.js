@@ -1,5 +1,8 @@
-(function () {
-  'use strict';
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (factory());
+}(this, function () { 'use strict';
 
   console.log('me like the way you work it. no diggity.')
 
@@ -16,20 +19,24 @@
   const COLOR_PRIMARY ='#0000ff';
   const COLOR_HOVER = '#ff0000';
 
+  // import App from './components/App';
+
   const codeLayers = {};
-  const table = document.getElementById('quakes_info');
+  const table = document.getElementById('data-list');
 
   function makeRow(props) {
     const { net, code, place, mag, time } = props;
     const date = new Date(time);
     const columns = [place, mag, date.toString()];
-    const row = document.createElement('tr');
+    const row = document.createElement('ul');
 
     row.id = net + code;
+    row.className = 'row';
 
     columns.forEach(text => {
-      const cell = document.createElement('td');
+      const cell = document.createElement('li');
 
+      cell.className = 'cell';
       cell.textContent = text;
       row.appendChild(cell);
     });
@@ -40,7 +47,7 @@
   function getRowFromEvent(event) {
     return Rx.Observable
       .fromEvent(table, event)
-      .filter(e => e.target.tagName === 'TD' && e.target.parentNode.id.length)
+      .filter(e => e.target.className === 'cell' && e.target.parentNode.id.length)
       .pluck('target', 'parentNode')
       .distinctUntilChanged();
   }
@@ -88,4 +95,4 @@
 
   Rx.DOM.ready().subscribe(initialize);
 
-}());
+}));

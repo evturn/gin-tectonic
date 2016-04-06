@@ -1,20 +1,23 @@
 import { MAP, req, quakeLayer } from './api';
 import { COLOR_HOVER, COLOR_PRIMARY } from './constants';
+// import App from './components/App';
 
 const codeLayers = {};
-const table = document.getElementById('quakes_info');
+const table = document.getElementById('data-list');
 
 function makeRow(props) {
   const { net, code, place, mag, time } = props;
   const date = new Date(time);
   const columns = [place, mag, date.toString()];
-  const row = document.createElement('tr');
+  const row = document.createElement('ul');
 
   row.id = net + code;
+  row.className = 'row';
 
   columns.forEach(text => {
-    const cell = document.createElement('td');
+    const cell = document.createElement('li');
 
+    cell.className = 'cell';
     cell.textContent = text;
     row.appendChild(cell);
   });
@@ -25,7 +28,7 @@ function makeRow(props) {
 function getRowFromEvent(event) {
   return Rx.Observable
     .fromEvent(table, event)
-    .filter(e => e.target.tagName === 'TD' && e.target.parentNode.id.length)
+    .filter(e => e.target.className === 'cell' && e.target.parentNode.id.length)
     .pluck('target', 'parentNode')
     .distinctUntilChanged();
 }
