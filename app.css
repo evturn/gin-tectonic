@@ -33,6 +33,7 @@ li {
 }
 li:first-child {
   width: 40%;
+  text-align: right;
 }
 li:nth-child(2) {
   width: 20%;
