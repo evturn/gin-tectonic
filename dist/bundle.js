@@ -11,11 +11,37 @@
     url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/' + 'summary/all_day.geojsonp',
     jsonpCallback: 'eqfeed_callback'
   };
+  const COLOR_PRIMARY ='#0000ff';
+  const COLOR_HOVER = '#ff0000';
+  const codeLayers = {};
+  const quakeLayer = L.layerGroup([]).addTo(map);
+  const identity = Rx.helpers.identity;
+
+  function isHovering(element) {
+    const over = Rx.DOM.mouseover(element).map(identity(true));
+    const out = Rx.DOM.mouseout(element).map(identity(false));
+
+    return over.merge(out);
+  }
+
+  function makeRow(props) {
+    const { net, code, place, mag, time } = props;
+    const date = new Date(time);
+    const row = document.createElement('tr');
+
+    row.id = net + code;
+
+    [place, mag, date.toString()].forEach(text => {
+      const cell = document.createElement('td');
+
+      cell.textContent = text;
+      row.appendChild(cell);
+    });
+
+    return row;
+  }
 
   function initialize() {
-    const codeLayers = {};
-    const quakeLayer = L.layerGroup([]).addTo(map);
-
     const quakes = Rx.Observable
       .interval(5000)
       .flatMap(() => Rx.DOM.jsonpRequest(req).retry(3))
@@ -45,26 +71,35 @@
 
         rows.forEach(row => fragment.appendChild(row));
 
-        return fragment;
+        return { rows, fragment };
       })
-      .subscribe(fragment => table.appendChild(fragment));
-  }
+      .subscribe(
+        props => {
 
-  function makeRow(props) {
-    const { net, code, place, mag, time } = props;
-    const date = new Date(time);
-    const row = document.createElement('tr');
 
-    row.id = net + code;
+          props.rows.forEach(row => {
+            const circle = quakeLayer.getLayer(codeLayers[row.id]);
 
-    [place, mag, date.toString()].forEach(text => {
-      const cell = document.createElement('td');
+            isHovering(row)
+              .subscribe(hovering => {
+                console.log(hovering);
+                circle.setStyle({
+                  color: hovering ? COLOR_HOVER : COLOR_PRIMARY
+                })
+              });
 
-      cell.textContent = text;
-      row.appendChild(cell);
-    });
 
-    return row;
+            Rx.DOM.click(row).subscribe(
+              () => {
+                console.log('Clickity');
+                map.panTo(circle.getLatLng())
+              }
+            );
+          })
+
+          table.appendChild(props.fragment);
+        }
+      );
   }
 
   Rx.DOM.ready().subscribe(initialize);
