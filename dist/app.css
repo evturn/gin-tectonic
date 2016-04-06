@@ -28,6 +28,9 @@ li {
   margin-bottom: 0;
   cursor: pointer;
 }
+.cell:hover {
+  color: #ff0000;
+}
 li:first-child {
   width: 40%;
 }
