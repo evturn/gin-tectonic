@@ -80,16 +80,7 @@
     quakes
       .pluck('properties')
       .map(makeRow)
-      .bufferWithTime(500)
-      .filter(rows => rows.length > 0)
-      .map(rows => {
-        const fragment = document.createDocumentFragment();
-
-        rows.forEach(row => fragment.appendChild(row));
-
-        return fragment;
-      })
-      .subscribe(fragment => table.appendChild(fragment));
+      .subscribe(row => table.appendChild(row));
   }
 
   Rx.DOM.ready().subscribe(initialize);

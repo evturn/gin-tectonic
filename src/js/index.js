@@ -15,13 +15,6 @@ const quakeLayer = L.layerGroup([]).addTo(map);
 const identity = Rx.helpers.identity;
 const table = document.getElementById('quakes_info');
 
-function isHovering(element) {
-  const over = Rx.DOM.mouseover(element).map(identity(true));
-  const out = Rx.DOM.mouseout(element).map(identity(false));
-
-  return over.merge(out);
-}
-
 function makeRow(props) {
   const { net, code, place, mag, time } = props;
   const date = new Date(time);
@@ -85,16 +78,7 @@ function initialize() {
   quakes
     .pluck('properties')
     .map(makeRow)
-    .bufferWithTime(500)
-    .filter(rows => rows.length > 0)
-    .map(rows => {
-      const fragment = document.createDocumentFragment();
-
-      rows.forEach(row => fragment.appendChild(row));
-
-      return fragment;
-    })
-    .subscribe(fragment => table.appendChild(fragment));
+    .subscribe(row => table.appendChild(row));
 }
 
 Rx.DOM.ready().subscribe(initialize);
