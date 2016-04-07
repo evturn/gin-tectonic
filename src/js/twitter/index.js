@@ -1,6 +1,6 @@
-const WebSocketServer = require('ws').Server;
-const Twit = require('twit');
-const Rx = require('rx');
+import { Server as WebSocketServer } from 'ws';
+import Twit from 'twit';
+import Rx from 'rx';
 
 const T = new Twit({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
