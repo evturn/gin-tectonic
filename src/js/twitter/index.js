@@ -10,7 +10,7 @@ const T = new Twit({
 });
 
 function onConnect(ws) {
- console.log('Client connected on localhost:8080');
+  console.log('Client connected on localhost:8080');
 }
 
 const Server = new WebSocketServer({ port: 8080 });

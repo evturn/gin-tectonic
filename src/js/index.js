@@ -1,7 +1,7 @@
 import { MAP, req, quakeLayer } from './api';
 import { COLOR_HOVER, COLOR_PRIMARY } from './constants';
 import '../css/app.less';
-import server from './twitter';
+// import server from './twitter';
 
 const codeLayers = {};
 
@@ -16,6 +16,9 @@ function getRowFromEvent(event) {
 }
 
 function initialize() {
+  const socket = Rx.DOM
+    .fromWebSocket('ws://127.0.0.1:8080')
+
   const quakes = Rx.Observable
     .interval(5000)
     .flatMap(() => Rx.DOM.jsonpRequest(req).retry(3))
@@ -31,6 +34,26 @@ function initialize() {
     quakeLayer.addLayer(circle);
     codeLayers[quake.id] = quakeLayer.getLayerId(circle);
   });
+
+  quakes
+    .bufferWithCount(100)
+    .subscribe(quakes => {
+      console.log(quakes);
+      const quakesData = quakes.map(quake => {
+        const {
+          properties: { net, code, mag },
+          geometry: { coordinates: [ lng, lat ] }
+        } = quake;
+
+        const id = net + code;
+
+        return { id, lat, lng, mag };
+      });
+
+      socket.onNext(JSON.stringify({ quakes: quakesData }));
+    });
+
+  socket.subscribe(message => console.log(JSON.parse(message.data)));
 
   getRowFromEvent('mouseover')
     .pairwise()
