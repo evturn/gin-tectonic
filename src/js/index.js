@@ -36,7 +36,7 @@ function initialize() {
       socket.onNext(JSON.stringify({ quakes: quakesData }));
     });
 
-  socket.subscribe(message => console.log(JSON.parse(message.data)));
+  socket.subscribe(message => JSON.parse(message.data));
 
   getRowFromEvent('mouseover')
     .pairwise()

@@ -27,10 +27,34 @@ function onConnect(ws) {
       });
     });
 
-  const onMessage = Observable.fromEvent(ws, 'message')
-    .subscribe(quake => {
-      quake = JSON.parse(quake);
-      console.log(quake);
+  Observable.fromEvent(ws, 'message')
+    .flatMap(quakesObj => {
+      const { quakes } = JSON.parse(quakesObj);
+
+      return Observable.from(quakes);
+    })
+    .scan((boundsArray, quake) => {
+      const { lng, lat } = quake;
+      const bounds = [
+        lng - 0.3,
+        lat - 0.15,
+        lng + 0.3,
+        lat + 0.15
+      ].map(coordinate => {
+        coordinate = coordinate.toString();
+
+        return coordinate.match(/\-?\d+(\.\-?\d{2})?/)[0];
+      });
+
+      boundsArray.concat(bounds);
+
+      return boundsArray.slice(Math.max(boundsArray.length - 50, 0))
+    })
+    .subscribe(boundsArray => {
+      console.log(stream);
+      stream.stop();
+      stream.params.locations = boundsArray.toString();
+      stream.start();
     });
 }
 

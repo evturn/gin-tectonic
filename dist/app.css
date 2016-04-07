@@ -6,7 +6,13 @@ body {
   height: 100%;
 }
 #map {
-  height: 80%;
+  height: 70%;
+}
+#twitter {
+  height: 10%;
+  width: 100%;
+  background-color: lightblue;
+  color: #000000;
 }
 #eq-data {
   color: #0033ff;

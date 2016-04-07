@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "589cd6efa0e2e677c6af"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2672453a9647e0acecbb"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8087,13 +8087,13 @@
 
 	var _api = __webpack_require__(77);
 
-	var _rx = __webpack_require__(83);
+	var _rx = __webpack_require__(78);
 
-	var _rxDom = __webpack_require__(84);
+	var _rxDom = __webpack_require__(79);
 
-	var _constants = __webpack_require__(78);
+	var _constants = __webpack_require__(80);
 
-	__webpack_require__(79);
+	__webpack_require__(81);
 
 	var codeLayers = {};
 	var table = document.getElementById('data-list');
@@ -8134,7 +8134,7 @@
 	  });
 
 	  socket.subscribe(function (message) {
-	    return console.log(JSON.parse(message.data));
+	    return JSON.parse(message.data);
 	  });
 
 	  getRowFromEvent('mouseover').pairwise().subscribe(onHoverHighlightMapQuake);
@@ -8257,27 +8257,6 @@
 
 /***/ },
 /* 78 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var COLOR_PRIMARY = exports.COLOR_PRIMARY = '#0000ff';
-	var COLOR_HOVER = exports.COLOR_HOVER = '#ff0000';
-
-/***/ },
-/* 79 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global, process) {// Copyright (c) Microsoft, All rights reserved. See License.txt in the project root for license information.
@@ -20672,7 +20651,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module), (function() { return this; }()), __webpack_require__(11)))
 
 /***/ },
-/* 84 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {// Copyright (c) Microsoft, Inc. All rights reserved. See License.txt in the project root for license information.
@@ -20698,7 +20677,7 @@
 
 	  // Because of build optimizers
 	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(83)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Rx, exports) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(78)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Rx, exports) {
 	      return factory(root, exports, Rx);
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof module === 'object' && module && module.exports === freeExports) {
@@ -22064,6 +22043,27 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module), (function() { return this; }())))
 
 /***/ },
+/* 80 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var COLOR_PRIMARY = exports.COLOR_PRIMARY = '#0000ff';
+	var COLOR_HOVER = exports.COLOR_HOVER = '#ff0000';
+
+/***/ },
+/* 81 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 82 */,
+/* 83 */,
+/* 84 */,
 /* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
