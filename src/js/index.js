@@ -32,6 +32,12 @@ function getRowFromEvent(event) {
     .distinctUntilChanged();
 }
 
+function sortQuakes(event) {
+  return Rx.Observable
+    .fromEvent(table, event)
+    .filter(e => e.target.className === 'column')
+}
+
 function initialize() {
   const quakes = Rx.Observable
     .interval(5000)
@@ -65,6 +71,18 @@ function initialize() {
        const circle = quakeLayer.getLayer(codeLayers[row.id]);
 
        MAP.panTo(circle.getLatLng());
+    });
+
+  sortQuakes('click')
+    .subscribe(column => {
+      switch (column.id) {
+        case 'loc':
+          console.log('location!');
+        case 'mag':
+          console.log('magnitude!');
+        case 'time':
+          console.log('time!');
+      }
     });
 
   quakes

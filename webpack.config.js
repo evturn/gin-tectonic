@@ -65,7 +65,7 @@ module.exports = {
       template: 'index.html',
       title: 'Earthquaker Oats',
       inject: false,
-      filename: 'index.html',
+      filename: 'index.html'
     })
   ]
 }

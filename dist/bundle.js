@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "503cd45a977da4663e26"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "92beb1ae50f2a73b3679"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -622,6 +622,12 @@
 	  }).pluck('target', 'parentNode').distinctUntilChanged();
 	}
 
+	function sortQuakes(event) {
+	  return Rx.Observable.fromEvent(table, event).filter(function (e) {
+	    return e.target.className === 'column';
+	  });
+	}
+
 	function initialize() {
 	  var quakes = Rx.Observable.interval(5000).flatMap(function () {
 	    return Rx.DOM.jsonpRequest(_api.req).retry(3);
@@ -661,6 +667,17 @@
 	    var circle = _api.quakeLayer.getLayer(codeLayers[row.id]);
 
 	    _api.MAP.panTo(circle.getLatLng());
+	  });
+
+	  sortQuakes('click').subscribe(function (column) {
+	    switch (column.id) {
+	      case 'loc':
+	        console.log('location!');
+	      case 'mag':
+	        console.log('magnitude!');
+	      case 'time':
+	        console.log('time!');
+	    }
 	  });
 
 	  quakes.pluck('properties').map(makeRow).subscribe(function (row) {
