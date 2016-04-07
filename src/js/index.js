@@ -3,27 +3,8 @@ import { COLOR_HOVER, COLOR_PRIMARY } from './constants';
 import '../css/app.less';
 
 const codeLayers = {};
+
 const table = document.getElementById('data-list');
-
-function makeRow(props) {
-  const { net, code, place, mag, time } = props;
-  const date = new Date(time);
-  const columns = [place, mag, date.toString()];
-  const row = document.createElement('ul');
-
-  row.id = net + code;
-  row.className = 'row';
-
-  columns.forEach(text => {
-    const cell = document.createElement('li');
-
-    cell.className = 'cell';
-    cell.textContent = text;
-    row.appendChild(cell);
-  });
-
-  return row;
-}
 
 function getRowFromEvent(event) {
   return Rx.Observable
@@ -31,12 +12,6 @@ function getRowFromEvent(event) {
     .filter(e => e.target.className === 'cell' && e.target.parentNode.id.length)
     .pluck('target', 'parentNode')
     .distinctUntilChanged();
-}
-
-function sortQuakes(event) {
-  return Rx.Observable
-    .fromEvent(table, event)
-    .filter(e => e.target.className === 'column')
 }
 
 function initialize() {
@@ -74,21 +49,44 @@ function initialize() {
        MAP.panTo(circle.getLatLng());
     });
 
-  sortQuakes('click')
-    .subscribe(column => {
-      switch (column.id) {
+  const header = document.getElementById('data-header');
+  Rx.Observable
+    .fromEvent(header, 'click')
+    .subscribe(e => {
+      switch (e.target.id) {
         case 'loc':
           console.log('location!');
+          break;
         case 'mag':
           console.log('magnitude!');
+          break;
         case 'time':
           console.log('time!');
+          break;
       }
     });
 
   quakes
     .pluck('properties')
-    .map(makeRow)
+    .map(props => {
+      const { net, code, place, mag, time } = props;
+      const date = new Date(time);
+      const columns = [place, mag, date.toString()];
+      const row = document.createElement('ul');
+
+      row.id = net + code;
+      row.className = 'row';
+
+      columns.forEach(text => {
+        const cell = document.createElement('li');
+
+        cell.className = 'cell';
+        cell.textContent = text;
+        row.appendChild(cell);
+      });
+
+      return row;
+    })
     .subscribe(row => table.appendChild(row));
 }
 

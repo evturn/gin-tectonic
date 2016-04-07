@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e794ecd3de6c043d6954"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7dea066dd2d2c6926e71"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -591,43 +591,13 @@
 	__webpack_require__(4);
 
 	var codeLayers = {};
+
 	var table = document.getElementById('data-list');
-
-	function makeRow(props) {
-	  var net = props.net;
-	  var code = props.code;
-	  var place = props.place;
-	  var mag = props.mag;
-	  var time = props.time;
-
-	  var date = new Date(time);
-	  var columns = [place, mag, date.toString()];
-	  var row = document.createElement('ul');
-
-	  row.id = net + code;
-	  row.className = 'row';
-
-	  columns.forEach(function (text) {
-	    var cell = document.createElement('li');
-
-	    cell.className = 'cell';
-	    cell.textContent = text;
-	    row.appendChild(cell);
-	  });
-
-	  return row;
-	}
 
 	function getRowFromEvent(event) {
 	  return Rx.Observable.fromEvent(table, event).filter(function (e) {
 	    return e.target.className === 'cell' && e.target.parentNode.id.length;
 	  }).pluck('target', 'parentNode').distinctUntilChanged();
-	}
-
-	function sortQuakes(event) {
-	  return Rx.Observable.fromEvent(table, event).filter(function (e) {
-	    return e.target.className === 'column';
-	  });
 	}
 
 	function initialize() {
@@ -671,18 +641,45 @@
 	    _api.MAP.panTo(circle.getLatLng());
 	  });
 
-	  sortQuakes('click').subscribe(function (column) {
-	    switch (column.id) {
+	  var header = document.getElementById('data-header');
+	  Rx.Observable.fromEvent(header, 'click').subscribe(function (e) {
+	    switch (e.target.id) {
 	      case 'loc':
 	        console.log('location!');
+	        break;
 	      case 'mag':
 	        console.log('magnitude!');
+	        break;
 	      case 'time':
 	        console.log('time!');
+	        break;
 	    }
 	  });
 
-	  quakes.pluck('properties').map(makeRow).subscribe(function (row) {
+	  quakes.pluck('properties').map(function (props) {
+	    var net = props.net;
+	    var code = props.code;
+	    var place = props.place;
+	    var mag = props.mag;
+	    var time = props.time;
+
+	    var date = new Date(time);
+	    var columns = [place, mag, date.toString()];
+	    var row = document.createElement('ul');
+
+	    row.id = net + code;
+	    row.className = 'row';
+
+	    columns.forEach(function (text) {
+	      var cell = document.createElement('li');
+
+	      cell.className = 'cell';
+	      cell.textContent = text;
+	      row.appendChild(cell);
+	    });
+
+	    return row;
+	  }).subscribe(function (row) {
 	    return table.appendChild(row);
 	  });
 	}
