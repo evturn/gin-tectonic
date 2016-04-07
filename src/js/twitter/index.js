@@ -11,6 +11,12 @@ const T = new Twit({
 
 function onConnect(ws) {
   console.log('Client connected on localhost:8080');
+  const onMessage = Rx.Observable
+    .fromEvent(ws, 'message')
+    .subscribe(quake => {
+      quake = JSON.parse(quake);
+      console.log(quake);
+    });
 }
 
 const Server = new WebSocketServer({ port: 8080 });

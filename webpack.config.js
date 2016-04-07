@@ -30,7 +30,6 @@ const prodPlugins = [
   new CleanWebpackPlugin(['dist'], { root: __dirname })
 ];
 
-
 module.exports = {
   entry: {
     app: [
