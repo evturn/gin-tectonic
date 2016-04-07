@@ -1,6 +1,8 @@
 import { MAP, req, quakeLayer } from './api';
 import { COLOR_HOVER, COLOR_PRIMARY } from './constants';
 import '../css/app.less';
+import { Observable } from 'rx';
+import { DOM } from 'rx-dom';
 // import server from './twitter';
 
 const codeLayers = {};
@@ -8,7 +10,7 @@ const codeLayers = {};
 const table = document.getElementById('data-list');
 
 function getRowFromEvent(event) {
-  return Rx.Observable
+  return Observable
     .fromEvent(table, event)
     .filter(e => e.target.className === 'cell' && e.target.parentNode.id.length)
     .pluck('target', 'parentNode')
@@ -16,13 +18,13 @@ function getRowFromEvent(event) {
 }
 
 function initialize() {
-  const socket = Rx.DOM
+  const socket = DOM
     .fromWebSocket('ws://127.0.0.1:8080')
 
-  const quakes = Rx.Observable
+  const quakes = Observable
     .interval(5000)
-    .flatMap(() => Rx.DOM.jsonpRequest(req).retry(3))
-    .flatMap(result => Rx.Observable.from(result.response.features))
+    .flatMap(() => DOM.jsonpRequest(req).retry(3))
+    .flatMap(result => Observable.from(result.response.features))
     .distinct(quake => quake.properties.code)
     .share();
 
@@ -74,7 +76,7 @@ function initialize() {
     });
 
   const header = document.getElementById('data-header');
-  Rx.Observable
+  Observable
     .fromEvent(header, 'click')
     .subscribe(e => {
       switch (e.target.id) {
@@ -115,4 +117,4 @@ function initialize() {
     .subscribe(row => table.appendChild(row));
 }
 
-Rx.DOM.ready().subscribe(initialize);
+DOM.ready().subscribe(initialize);
