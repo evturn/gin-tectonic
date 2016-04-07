@@ -1,6 +1,6 @@
 import { Server as WebSocketServer } from 'ws';
 import Twit from 'twit';
-import Rx from 'rx';
+import { Observable } from 'rx';
 
 const T = new Twit({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -11,8 +11,23 @@ const T = new Twit({
 
 function onConnect(ws) {
   console.log('Client connected on localhost:8080');
-  const onMessage = Rx.Observable
-    .fromEvent(ws, 'message')
+
+  const stream = T.stream('statuses/filter', {
+      track: 'earthquake',
+      locations: []
+    }
+  );
+
+  Observable.fromEvent(stream, 'tweet')
+    .subscribe(tweetObject => {
+      ws.send(JSON.stringify(tweetObject), err => {
+        if (err) {
+          console.log('There was an error sending the message');
+        }
+      });
+    });
+
+  const onMessage = Observable.fromEvent(ws, 'message')
     .subscribe(quake => {
       quake = JSON.parse(quake);
       console.log(quake);
@@ -21,6 +36,5 @@ function onConnect(ws) {
 
 const Server = new WebSocketServer({ port: 8080 });
 
-Rx.Observable
-  .fromEvent(Server, 'connection')
+Observable.fromEvent(Server, 'connection')
   .subscribe(onConnect);

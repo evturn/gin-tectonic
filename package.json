@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development webpack --watch",
     "start": "NODE_ENV=development node webpack-dev-server.js",
+    "ws": "node src/js/twitter/entry.js",
     "build": "NODE_ENV=production webpack",
     "deploy": "gh-pages -d dist"
   },

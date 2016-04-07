@@ -8,9 +8,7 @@ config.entry.app.unshift(
 );
 
 const compiler = webpack(config);
-const server = new webpackDevServer(
-  compiler,
-  {
+const server = new webpackDevServer(compiler, {
     hot: true,
     inline: true
   }
