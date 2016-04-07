@@ -59,6 +59,7 @@ function initialize() {
           break;
         case 'mag':
           console.log('magnitude!');
+          quakes.subscribe(x => console.log(x))
           break;
         case 'time':
           console.log('time!');

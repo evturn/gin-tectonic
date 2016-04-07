@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7dea066dd2d2c6926e71"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "14cdb20da74332864b49"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -649,6 +649,9 @@
 	        break;
 	      case 'mag':
 	        console.log('magnitude!');
+	        quakes.subscribe(function (x) {
+	          return console.log(x);
+	        });
 	        break;
 	      case 'time':
 	        console.log('time!');
