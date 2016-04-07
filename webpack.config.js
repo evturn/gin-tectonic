@@ -43,6 +43,7 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: PATHS.publicPath
   },
+  contentBase: __dirname,
   devServer: {
     outputPath: PATHS.dest,
     historyApiFallback: true,

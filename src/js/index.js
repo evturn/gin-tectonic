@@ -38,7 +38,7 @@ function initialize() {
   quakes
     .bufferWithCount(100)
     .subscribe(quakes => {
-      console.log(quakes);
+
       const quakesData = quakes.map(quake => {
         const {
           properties: { net, code, mag },
