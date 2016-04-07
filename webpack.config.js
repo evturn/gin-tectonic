@@ -3,12 +3,33 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+const ENV = process.env.NODE_ENV;
 
 const PATHS = {
   src: path.join(__dirname, 'src'),
   dest: path.join(__dirname, 'dist'),
   publicPath: '/dist/'
 }
+
+const basePlugins = [
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NoErrorsPlugin(),
+  new WriteFilePlugin(),
+  new ExtractTextPlugin('app.css'),
+  new HtmlWebpackPlugin({
+    template: 'index.html',
+    title: 'Earthquaker Oats',
+    inject: false,
+    filename: 'index.html'
+  })
+];
+
+const prodPlugins = [
+  new CleanWebpackPlugin(['dist'], { root: __dirname })
+];
+
 
 module.exports = {
   entry: {
@@ -56,16 +77,5 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.less'],
     moduleDirectories: ['app', 'node_modules']
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new WriteFilePlugin(),
-    new ExtractTextPlugin('app.css'),
-    new HtmlWebpackPlugin({
-      template: 'index.html',
-      title: 'Earthquaker Oats',
-      inject: false,
-      filename: 'index.html'
-    })
-  ]
-}
+  plugins: ENV === 'development' ? basePlugins : basePlugins.concat(prodPlugins)
+};

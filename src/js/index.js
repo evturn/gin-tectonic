@@ -1,5 +1,6 @@
 import { MAP, req, quakeLayer } from './api';
 import { COLOR_HOVER, COLOR_PRIMARY } from './constants';
+import '../css/app.less';
 
 const codeLayers = {};
 const table = document.getElementById('data-list');

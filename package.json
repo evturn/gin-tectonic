@@ -4,8 +4,8 @@
   "description": "LA, a place built to fall.",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --watch",
-    "build": "webpack",
+    "dev": "NODE_ENV=development webpack --watch",
+    "build": "NODE_ENV=production webpack",
     "deploy": "gh-pages -d dist"
   },
   "repository": {
