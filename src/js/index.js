@@ -1,6 +1,10 @@
 import { MAP, req, quakeLayer } from './api';
 import { COLOR_HOVER, COLOR_PRIMARY } from './constants';
 import '../css/app.less';
+import server from './twitter';
+
+
+console.log(server);
 
 const codeLayers = {};
 
