@@ -31,15 +31,18 @@ function onConnect(ws) {
         track: 'earthquake',
         locations: location,
       });
-      stream.on('connect',    () => console.log('Connecting to Twitter'));
+
+      stream.on('tweet', data => {
+        Observable.fromEvent(stream, 'tweet')
+          .subscribe(() => {
+            ws.send(JSON.stringify(data), err => {
+              err ? console.log(`We got problems ${err}`) : console.log(data.text);
+            });
+          })
+      });
       stream.on('connected',  () => console.log('Connection to Twitter Established (in 2008 LoLz!)'));
       stream.on('disconnect', () => console.log('Somebody gone.'));
       stream.on('limit',      () => console.log('Limit reached'));
-      stream.on('tweet', data => {
-        ws.send(JSON.stringify(data), err => {
-          err ? console.log(`We got problems ${err}`) : console.log(data.text);
-        });
-      });
   });
 }
 

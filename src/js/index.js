@@ -95,8 +95,10 @@ function renderTweet(tweetObj) {
   const { user: { profile_image_url }, text, created_at } = tweetObj;
   const date = new Date(created_at);
   const content = `
-    <img class="avatar" src="${profile_image_url}" />
-    <div class="text">${text}</div>
+    <div class="details">
+      <img class="avatar" src="${profile_image_url}" />
+      <div class="text">${text}</div>
+    </div>
     <div class="day">${date.toLocaleDateString()}</div>
     <div class="time">${date.toLocaleTimeString()}</div>
   `;
