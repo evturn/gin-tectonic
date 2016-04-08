@@ -92,13 +92,14 @@ function renderRows(props) {
 }
 
 function renderTweet(tweetObj) {
-  const { avatar, text, date, time } = tweetObj;
+  const { avatar, text, date, time, name } = tweetObj;
   const content = `
     <div class="details">
       <img class="avatar" src="${avatar}" />
       <div class="text">${text}</div>
     </div>
     <div class="date">
+      <div class="name">@${name}</div>
       <div class="day">${date}</div>
       <div class="time">${time}</div>
     </div>

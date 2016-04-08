@@ -32,28 +32,44 @@ function onConnect(ws) {
         locations: location,
       });
 
-      stream.on('tweet', data => {
-        Observable.from(parseTweet(data))
-          .subscribe(data => {
-            ws.send(JSON.stringify(data), err => {
-              err ? console.log(`We got problems ${err}`) : console.log(data.text);
-            });
-          })
-      });
-      stream.on('connected',  () => console.log('Connection to Twitter Established (in 2008 LoLz!)'));
-      stream.on('disconnect', () => console.log('Somebody gone.'));
-      stream.on('limit',      () => console.log('Limit reached'));
+      const tweet$ = Observable.fromEvent(stream, 'tweet')
+      const connected$ = Observable.fromEvent(stream, 'connected')
+
+      connected$.subscribe(
+        () => console.log('Connection to Twitter Established (in 2008 LoLz!)')
+      );
+
+      tweet$.flatMap(data => parseTweet(data))
+        .subscribe(data => {
+          ws.send(JSON.stringify(data), err => {
+            err ? console.log(`We got problems ${err}`) : console.log(data.text);
+          });
+        });
   });
 }
 
-
 function parseTweet(data) {
-  const { user: { profile_image_url }, text, created_at } = data;
+  const {
+    user: { profile_image_url, screen_name },
+    text, created_at
+  } = data;
+  const [ firstChar ] = text;
   const date = new Date(created_at);
+  const isClean = (
+    !text.includes('RT') &&
+    !text.includes('http') &&
+    firstChar !== '@' &&
+    firstChar !== '#' &&
+    firstChar !== '.' &&
+    firstChar !== '[' &&
+    firstChar !== '-' &&
+    firstChar !== '<'
+  );
 
-  if (!text.includes('RT') && !text.includes('http') && text[0] !== '@' && text[0] !== '#') {
+  if (isClean) {
     return [{
       text,
+      name: screen_name,
       avatar: profile_image_url,
       date: date.toLocaleDateString(),
       time: date.toLocaleTimeString()
