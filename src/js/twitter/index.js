@@ -1,5 +1,5 @@
 import { Server as WebSocketServer } from 'ws';
-import Twit from 'twit';
+import T from './credentials';
 import { Observable } from 'rx';
 
 function onConnect(ws) {
@@ -20,13 +20,6 @@ function onConnect(ws) {
     .filter((boundary, i) => i < 50)
     .map(boundary => boundary)
     .subscribe(location => {
-      const T = new Twit({
-        consumer_key: process.env.CLANG_TWITTER_CONSUMER_KEY,
-        consumer_secret: process.env.CLANG_TWITTER_CONSUMER_SECRET,
-        access_token: process.env.CLANG_TWITTER_TOKEN_KEY,
-        access_token_secret: process.env.CLANG_TWITTER_TOKEN_SECRET
-      });
-
       const stream = T.stream('statuses/filter', {
         track: 'earthquake',
         locations: location,
@@ -39,7 +32,8 @@ function onConnect(ws) {
         () => console.log('Connection to Twitter Established (in 2008 LoLz!)')
       );
 
-      tweet$.flatMap(data => parseTweet(data))
+      tweet$.flatMap(data => Observable.from(parseTweet(data)))
+        .distinct(data => data.text)
         .subscribe(data => {
           ws.send(JSON.stringify(data), err => {
             err ? console.log(`We got problems ${err}`) : console.log(data.text);
