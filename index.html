@@ -6,17 +6,19 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
   <link rel="stylesheet" href="app.css">
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.all.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs-dom/7.0.3/rx.dom.js"></script>
 </head>
 <body>
+  <div id="twitter">
+    <div id="twitter-header">Quake Stream</div>
+    <div id="twitter-list"></div>
+  </div>
   <div id="map"></div>
   <div id="root"></div>
   <div id="eq-data">
     <ul id="data-header">
-      <li>Location</li>
-      <li>Magnitude</li>
-      <li>Time</li>
+      <li class="column" id="loc">Location</li>
+      <li class="column" id="mag">Magnitude</li>
+      <li class="column" id="time">Time</li>
     </ul>
     <div id="data-list"></div>
   </div>
