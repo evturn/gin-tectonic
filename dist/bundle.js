@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2c6c4217f149a80c070f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0cb52e77800180e6095a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8198,8 +8198,7 @@
 	  var created_at = tweetObj.created_at;
 
 	  var date = new Date(created_at);
-	  var timestamp = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-	  var content = '\n    <img src="' + profile_image_url + '" class="avatar" />\n    <div class="text">' + text + '</div>\n    <div class="date">' + timestamp + '</div>\n  ';
+	  var content = '\n    <img class="avatar" src="' + profile_image_url + '" />\n    <div class="text">' + text + '</div>\n    <div class="day">' + date.toLocaleDateString() + '</div>\n    <div class="time">' + date.toLocaleTimeString() + '</div>\n  ';
 	  var div = document.createElement('div');
 
 	  div.className = 'tweet';

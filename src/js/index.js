@@ -94,11 +94,11 @@ function renderRows(props) {
 function renderTweet(tweetObj) {
   const { user: { profile_image_url }, text, created_at } = tweetObj;
   const date = new Date(created_at);
-  const timestamp = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   const content = `
-    <img src="${profile_image_url}" class="avatar" />
+    <img class="avatar" src="${profile_image_url}" />
     <div class="text">${text}</div>
-    <div class="date">${timestamp}</div>
+    <div class="day">${date.toLocaleDateString()}</div>
+    <div class="time">${date.toLocaleTimeString()}</div>
   `;
   const div = document.createElement('div');
 

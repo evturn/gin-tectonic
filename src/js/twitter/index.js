@@ -31,21 +31,16 @@ function onConnect(ws) {
         track: 'earthquake',
         locations: location,
       });
-
+      stream.on('connect',    () => console.log('Connecting to Twitter'));
+      stream.on('connected',  () => console.log('Connection to Twitter Established (in 2008 LoLz!)'));
+      stream.on('disconnect', () => console.log('Somebody gone.'));
+      stream.on('limit',      () => console.log('Limit reached'));
       stream.on('tweet', data => {
         ws.send(JSON.stringify(data), err => {
           err ? console.log(`We got problems ${err}`) : console.log(data.text);
         });
       });
-      stream.on('connected', log);
-      stream.on('connect', log);
-      stream.on('disconnect', log);
-      stream.on('limit', log);
   });
-}
-
-function log(message) {
-  console.log(message);
 }
 
 const Server = new WebSocketServer({ port: 8080 });

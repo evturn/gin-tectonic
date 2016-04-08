@@ -1,6 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700);.font-mono {
   font-family: 'Ubuntu Mono', serif;
 }
+.clearfix {
+  zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
 html,
 body {
   font-family: 'Ubuntu Mono', serif;
@@ -11,17 +22,51 @@ body {
 #map {
   height: 100%;
 }
+#twitter {
+  zoom: 1;
+}
+#twitter:before,
+#twitter:after {
+  content: " ";
+  display: table;
+}
+#twitter:after {
+  clear: both;
+}
 @media (min-width: 768px) {
   #twitter {
     position: fixed;
     right: 20px;
     top: 20px;
+    overflow: scroll;
     height: 600px;
     width: 300px;
     z-index: 2;
     background-color: lightblue;
     color: #000000;
   }
+}
+#twitter .avatar {
+  float: left;
+  border-radius: 50%;
+}
+#twitter .text {
+  float: right;
+}
+#twitter .day,
+#twitter .time {
+  font-size: 10px;
+}
+#eq-data {
+  zoom: 1;
+}
+#eq-data:before,
+#eq-data:after {
+  content: " ";
+  display: table;
+}
+#eq-data:after {
+  clear: both;
 }
 @media (min-width: 768px) {
   #eq-data {
@@ -30,6 +75,7 @@ body {
     top: 20px;
     height: 600px;
     width: 300px;
+    overflow: scroll;
     color: #0033ff;
     text-transform: uppercase;
   }
