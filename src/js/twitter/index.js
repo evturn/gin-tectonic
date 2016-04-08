@@ -3,9 +3,9 @@ import Twit from 'twit';
 import { Observable } from 'rx';
 
 function onConnect(ws) {
-  console.log('Client connected on localhost:8080');
+  console.log('Somebody here.');
 
-  const quake$ = Observable.fromEvent(ws, 'message')
+  Observable.fromEvent(ws, 'message')
     .flatMap(quakesObj => {
       const { quakes } = JSON.parse(quakesObj);
 
@@ -34,11 +34,7 @@ function onConnect(ws) {
 
       stream.on('tweet', data => {
         ws.send(JSON.stringify(data), err => {
-          if (err) {
-            console.log('There was an error sending the message');
-          } else {
-            console.log(data.text);
-          }
+          err ? console.log(`We got problems ${err}`) : console.log(data.text);
         });
       });
   });
