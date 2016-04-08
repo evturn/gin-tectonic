@@ -37,7 +37,7 @@ function initialize() {
 
   socket.map(message => JSON.parse(message.data))
     .subscribe(data => {
-      const container = document.getElementById('twitter');
+      const container = document.getElementById('twitter-list');
 
       container.insertBefore(renderTweet(data), container.firstChild);
     });
@@ -95,11 +95,15 @@ function renderTweet(tweetObj) {
   const { avatar, text, date, time, name } = tweetObj;
   const content = `
     <div class="details">
-      <img class="avatar" src="${avatar}" />
+      <a href="https://twitter.com/${name}">
+        <img class="avatar" src="${avatar}" />
+      </a>
       <div class="text">${text}</div>
     </div>
     <div class="date">
-      <div class="name">@${name}</div>
+      <div class="name">
+        <a href="https://twitter.com/${name}">@${name}</a>
+      </div>
       <div class="day">${date}</div>
       <div class="time">${time}</div>
     </div>

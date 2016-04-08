@@ -36,19 +36,22 @@ body {
 @media (min-width: 768px) {
   #twitter {
     position: fixed;
-    right: 20px;
-    top: 20px;
+    left: 20px;
+    top: 440px;
     overflow: scroll;
-    height: 600px;
+    height: 200px;
     width: 300px;
     z-index: 2;
-    background-color: lightblue;
+    background-color: rgba(255, 255, 255, 0.7);
     color: #000000;
   }
 }
 #twitter .tweet {
   padding: 10px 5px;
-  border-bottom: 1px solid #ffffff;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  border-bottom: 1px solid rgba(209, 209, 209, 0.7);
 }
 #twitter .details {
   display: block;
@@ -98,6 +101,10 @@ body {
   text-align: right;
   font-size: 10px;
 }
+#twitter .name a {
+  text-decoration: none;
+  color: #000000;
+}
 #eq-data {
   zoom: 1;
 }
@@ -114,7 +121,7 @@ body {
     position: fixed;
     left: 20px;
     top: 20px;
-    height: 600px;
+    height: 400px;
     width: 300px;
     overflow: scroll;
     color: #0033ff;
@@ -150,10 +157,15 @@ li:nth-child(2) {
 li:last-child {
   width: 40%;
 }
+#twitter-header,
 #data-header {
   color: #ffffff;
   background-color: red;
-  font-weight: 700;
+  font-weight: 500;
+}
+#twitter-header {
+  text-align: center;
+  text-transform: uppercase;
 }
 #data-header li {
   text-align: center;

@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7e999b071ad8b65fbf20"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ca625ec42179a49f5d82"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8137,7 +8137,7 @@
 	  socket.map(function (message) {
 	    return JSON.parse(message.data);
 	  }).subscribe(function (data) {
-	    var container = document.getElementById('twitter');
+	    var container = document.getElementById('twitter-list');
 
 	    container.insertBefore(renderTweet(data), container.firstChild);
 	  });
@@ -8199,7 +8199,7 @@
 	  var time = tweetObj.time;
 	  var name = tweetObj.name;
 
-	  var content = '\n    <div class="details">\n      <img class="avatar" src="' + avatar + '" />\n      <div class="text">' + text + '</div>\n    </div>\n    <div class="date">\n      <div class="name">@' + name + '</div>\n      <div class="day">' + date + '</div>\n      <div class="time">' + time + '</div>\n    </div>\n  ';
+	  var content = '\n    <div class="details">\n      <a href="https://twitter.com/' + name + '">\n        <img class="avatar" src="' + avatar + '" />\n      </a>\n      <div class="text">' + text + '</div>\n    </div>\n    <div class="date">\n      <div class="name">\n        <a href="https://twitter.com/' + name + '">@' + name + '</a>\n      </div>\n      <div class="day">' + date + '</div>\n      <div class="time">' + time + '</div>\n    </div>\n  ';
 	  var div = document.createElement('div');
 
 	  div.className = 'tweet';
