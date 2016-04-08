@@ -33,16 +33,7 @@ function onConnect(ws) {
       });
 
       stream.on('tweet', data => {
-        const { user: { profile_image_url }, text, created_at } = data;
-        const date = new Date(created_at);
-        const incoming = [{
-          text,
-          avatar: profile_image_url,
-          date: date.toLocaleDateString(),
-          time: date.toLocaleTimeString()
-        }];
-
-        Observable.from(incoming)
+        Observable.from(parseTweet(data))
           .subscribe(data => {
             ws.send(JSON.stringify(data), err => {
               err ? console.log(`We got problems ${err}`) : console.log(data.text);
@@ -53,6 +44,23 @@ function onConnect(ws) {
       stream.on('disconnect', () => console.log('Somebody gone.'));
       stream.on('limit',      () => console.log('Limit reached'));
   });
+}
+
+
+function parseTweet(data) {
+  const { user: { profile_image_url }, text, created_at } = data;
+  const date = new Date(created_at);
+
+  if (!text.includes('RT') && !text.includes('http') && text[0] !== '@' && text[0] !== '#') {
+    return [{
+      text,
+      avatar: profile_image_url,
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString()
+    }];
+  } else {
+    return [];
+  }
 }
 
 const Server = new WebSocketServer({ port: 8080 });
