@@ -42,14 +42,9 @@ function onConnect(ws) {
   });
 }
 
-function parseTweet(data) {
-  const {
-    user: { profile_image_url, screen_name },
-    text, created_at
-  } = data;
+function sanitizeTweets(text) {
   const [ firstChar ] = text;
-  const date = new Date(created_at);
-  const isClean = (
+  return !!(
     !text.includes('RT') &&
     !text.includes('http') &&
     firstChar !== '@' &&
@@ -59,8 +54,16 @@ function parseTweet(data) {
     firstChar !== '-' &&
     firstChar !== '<'
   );
+}
 
-  if (isClean) {
+function parseTweet(data) {
+  const {
+    user: { profile_image_url, screen_name },
+    text, created_at
+  } = data;
+  const date = new Date(created_at);
+
+  if (sanitizeTweets(text)) {
     return [{
       text,
       name: screen_name,
