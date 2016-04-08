@@ -46,15 +46,53 @@ body {
     color: #000000;
   }
 }
+#twitter .tweet {
+  padding: 10px 5px;
+  border-bottom: 1px solid #ffffff;
+}
+#twitter .details {
+  display: block;
+  position: relative;
+  zoom: 1;
+}
+#twitter .details:before,
+#twitter .details:after {
+  content: " ";
+  display: table;
+}
+#twitter .details:after {
+  clear: both;
+}
+#twitter .date {
+  display: block;
+  position: relative;
+  zoom: 1;
+}
+#twitter .date:before,
+#twitter .date:after {
+  content: " ";
+  display: table;
+}
+#twitter .date:after {
+  clear: both;
+}
 #twitter .avatar {
   float: left;
   border-radius: 50%;
+  width: 20%;
+  text-align: center;
 }
 #twitter .text {
   float: right;
+  width: 75%;
+  text-align: left;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 #twitter .day,
 #twitter .time {
+  display: inline-block;
+  text-align: right;
   font-size: 10px;
 }
 #eq-data {
@@ -77,6 +115,7 @@ body {
     width: 300px;
     overflow: scroll;
     color: #0033ff;
+    background-color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
   }
 }

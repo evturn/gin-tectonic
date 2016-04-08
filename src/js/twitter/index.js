@@ -33,8 +33,17 @@ function onConnect(ws) {
       });
 
       stream.on('tweet', data => {
-        Observable.fromEvent(stream, 'tweet')
-          .subscribe(() => {
+        const { user: { profile_image_url }, text, created_at } = data;
+        const date = new Date(created_at);
+        const incoming = [{
+          text,
+          avatar: profile_image_url,
+          date: date.toLocaleDateString(),
+          time: date.toLocaleTimeString()
+        }];
+
+        Observable.from(incoming)
+          .subscribe(data => {
             ws.send(JSON.stringify(data), err => {
               err ? console.log(`We got problems ${err}`) : console.log(data.text);
             });

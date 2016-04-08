@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0cb52e77800180e6095a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "486f5d8296c9dc697abf"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8193,12 +8193,12 @@
 	}
 
 	function renderTweet(tweetObj) {
-	  var profile_image_url = tweetObj.user.profile_image_url;
+	  var avatar = tweetObj.avatar;
 	  var text = tweetObj.text;
-	  var created_at = tweetObj.created_at;
+	  var date = tweetObj.date;
+	  var time = tweetObj.time;
 
-	  var date = new Date(created_at);
-	  var content = '\n    <img class="avatar" src="' + profile_image_url + '" />\n    <div class="text">' + text + '</div>\n    <div class="day">' + date.toLocaleDateString() + '</div>\n    <div class="time">' + date.toLocaleTimeString() + '</div>\n  ';
+	  var content = '\n    <div class="details">\n      <img class="avatar" src="' + avatar + '" />\n      <div class="text">' + text + '</div>\n    </div>\n    <div class="date">\n      <div class="day">' + date + '</div>\n      <div class="time">' + time + '</div>\n    </div>\n  ';
 	  var div = document.createElement('div');
 
 	  div.className = 'tweet';
