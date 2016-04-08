@@ -36,7 +36,10 @@ function initialize() {
       socket.onNext(JSON.stringify({ quakes: quakesData }));
     });
 
-  socket.subscribe(message => JSON.parse(message.data));
+  socket.subscribe(message => {
+    console.log(JSON.parse(message.data));
+    JSON.parse(message.data)
+  });
 
   getRowFromEvent('mouseover')
     .pairwise()
@@ -46,7 +49,20 @@ function initialize() {
     .subscribe(onClickPanToQuake);
 
   getColumnFromEvent('click')
-    .subscribe(onClickSortByColumn);
+    .subscribe(e => {
+      switch (e.target.id) {
+        case 'loc':
+          console.log('location!');
+          break;
+        case 'mag':
+          console.log('magnitude!');
+          quakes.subscribe(x => console.log(x))
+          break;
+        case 'time':
+          console.log('time!');
+          break;
+      }
+    });
 
   quakes.pluck('properties')
     .map(insertRowsByTime)
@@ -108,19 +124,4 @@ function onClickPanToQuake(row) {
   const circle = quakeLayer.getLayer(codeLayers[row.id]);
 
   MAP.panTo(circle.getLatLng());
-}
-
-function onClickSortByColumn(e) {
-  switch (e.target.id) {
-    case 'loc':
-      console.log('location!');
-      break;
-    case 'mag':
-      console.log('magnitude!');
-      quakes.subscribe(x => console.log(x))
-      break;
-    case 'time':
-      console.log('time!');
-      break;
-  }
 }

@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2672453a9647e0acecbb"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ad47bb87baef053ceb8d"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8134,14 +8134,30 @@
 	  });
 
 	  socket.subscribe(function (message) {
-	    return JSON.parse(message.data);
+	    console.log(JSON.parse(message.data));
+	    JSON.parse(message.data);
 	  });
 
 	  getRowFromEvent('mouseover').pairwise().subscribe(onHoverHighlightMapQuake);
 
 	  getRowFromEvent('click').subscribe(onClickPanToQuake);
 
-	  getColumnFromEvent('click').subscribe(onClickSortByColumn);
+	  getColumnFromEvent('click').subscribe(function (e) {
+	    switch (e.target.id) {
+	      case 'loc':
+	        console.log('location!');
+	        break;
+	      case 'mag':
+	        console.log('magnitude!');
+	        quakes.subscribe(function (x) {
+	          return console.log(x);
+	        });
+	        break;
+	      case 'time':
+	        console.log('time!');
+	        break;
+	    }
+	  });
 
 	  quakes.pluck('properties').map(insertRowsByTime).subscribe(function (row) {
 	    return table.appendChild(row);
@@ -8215,23 +8231,6 @@
 	  var circle = _api.quakeLayer.getLayer(codeLayers[row.id]);
 
 	  _api.MAP.panTo(circle.getLatLng());
-	}
-
-	function onClickSortByColumn(e) {
-	  switch (e.target.id) {
-	    case 'loc':
-	      console.log('location!');
-	      break;
-	    case 'mag':
-	      console.log('magnitude!');
-	      quakes.subscribe(function (x) {
-	        return console.log(x);
-	      });
-	      break;
-	    case 'time':
-	      console.log('time!');
-	      break;
-	  }
 	}
 
 /***/ },

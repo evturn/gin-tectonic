@@ -4,10 +4,10 @@
   "description": "LA, a place built to fall.",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development webpack --watch",
-    "start": "NODE_ENV=development node webpack-dev-server.js",
-    "ws": "node src/js/twitter/entry.js",
     "build": "NODE_ENV=production webpack",
+    "start": "NODE_ENV=development node webpack-dev-server.js",
+    "socket": "node src/js/twitter/entry.js",
+    "dev": "NODE_ENV=development webpack --watch",
     "deploy": "gh-pages -d dist"
   },
   "repository": {
