@@ -37,7 +37,15 @@ function onConnect(ws) {
           err ? console.log(`We got problems ${err}`) : console.log(data.text);
         });
       });
+      stream.on('connected', log);
+      stream.on('connect', log);
+      stream.on('disconnect', log);
+      stream.on('limit', log);
   });
+}
+
+function log(message) {
+  console.log(message);
 }
 
 const Server = new WebSocketServer({ port: 8080 });

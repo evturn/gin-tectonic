@@ -17,10 +17,9 @@ function initialize() {
     .distinct(quake => quake.properties.code)
     .share();
 
-  quakes.subscribe(drawQuakesOnMap);
+  quakes.subscribe(renderQuakes);
 
-  quakes
-    .bufferWithCount(100)
+  quakes.bufferWithCount(100)
     .subscribe(quakes => {
       const quakesData = quakes.map(quake => {
         const {
@@ -36,10 +35,12 @@ function initialize() {
       socket.onNext(JSON.stringify({ quakes: quakesData }));
     });
 
-  socket.subscribe(message => {
-    console.log(JSON.parse(message.data));
-    JSON.parse(message.data)
-  });
+  socket.map(message => JSON.parse(message.data))
+    .subscribe(data => {
+      const container = document.getElementById('twitter');
+
+      container.insertBefore(renderTweet(data), container.firstChild);
+    });
 
   getRowFromEvent('mouseover')
     .pairwise()
@@ -56,7 +57,6 @@ function initialize() {
           break;
         case 'mag':
           console.log('magnitude!');
-          quakes.subscribe(x => console.log(x))
           break;
         case 'time':
           console.log('time!');
@@ -65,13 +65,13 @@ function initialize() {
     });
 
   quakes.pluck('properties')
-    .map(insertRowsByTime)
+    .map(renderRows)
     .subscribe(row => table.appendChild(row));
 }
 
 DOM.ready().subscribe(initialize);
 
-function insertRowsByTime(props) {
+function renderRows(props) {
   const { net, code, place, mag, time } = props;
   const date = new Date(time);
   const columns = [place, mag, date.toString()];
@@ -91,7 +91,23 @@ function insertRowsByTime(props) {
   return row;
 }
 
-function drawQuakesOnMap(quake) {
+function renderTweet(tweetObj) {
+  const { user: { profile_image_url }, text, created_at } = tweetObj;
+  const date = new Date(created_at);
+  const timestamp = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  const content = `
+    <img src="${profile_image_url}" class="avatar" />
+    <div class="text">${text}</div>
+    <div class="date">${timestamp}</div>
+  `;
+  const div = document.createElement('div');
+
+  div.className = 'tweet';
+  div.innerHTML = content;
+  return div;
+}
+
+function renderQuakes(quake) {
   const [ lng, lat ] = quake.geometry.coordinates;
   const size = quake.properties.mag * 10000;
   const circle = L.circle([ lat, lng ], size).addTo(MAP);

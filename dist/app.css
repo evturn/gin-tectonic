@@ -1,4 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700);html,
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700);.font-mono {
+  font-family: 'Ubuntu Mono', serif;
+}
+html,
 body {
   font-family: 'Ubuntu Mono', serif;
   margin: 0;
@@ -6,19 +9,30 @@ body {
   height: 100%;
 }
 #map {
-  height: 70%;
+  height: 100%;
 }
-#twitter {
-  height: 10%;
-  width: 100%;
-  background-color: lightblue;
-  color: #000000;
+@media (min-width: 768px) {
+  #twitter {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    height: 600px;
+    width: 300px;
+    z-index: 2;
+    background-color: lightblue;
+    color: #000000;
+  }
 }
-#eq-data {
-  color: #0033ff;
-  height: 20%;
-  width: 100%;
-  text-transform: uppercase;
+@media (min-width: 768px) {
+  #eq-data {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    height: 600px;
+    width: 300px;
+    color: #0033ff;
+    text-transform: uppercase;
+  }
 }
 ul {
   display: flex;
