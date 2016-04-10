@@ -26,9 +26,10 @@ const basePlugins = [
   })
 ];
 
-const prodPlugins = [
+const devPlugins = basePlugins;
+const prodPlugins = basePlugins.concat([
   new CleanWebpackPlugin(['dist'], { root: __dirname })
-];
+]);
 
 module.exports = {
   entry: {
@@ -80,5 +81,5 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.less'],
     moduleDirectories: ['app', 'node_modules']
   },
-  plugins: ENV === 'development' ? basePlugins : basePlugins.concat(prodPlugins)
+  plugins: ENV === 'development' ? devPlugins : prodPlugins;
 };
