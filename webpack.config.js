@@ -81,5 +81,5 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.less'],
     moduleDirectories: ['app', 'node_modules']
   },
-  plugins: ENV === 'development' ? devPlugins : prodPlugins;
+  plugins: ENV === 'development' ? devPlugins : prodPlugins
 };

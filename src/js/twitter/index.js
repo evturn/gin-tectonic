@@ -25,6 +25,8 @@ function onConnect(ws) {
         locations: location,
       });
 
+      console.log(location);
+
       const tweet$ = Observable.fromEvent(stream, 'tweet')
       const connected$ = Observable.fromEvent(stream, 'connected')
 
@@ -46,6 +48,7 @@ function sanitizeTweets(text) {
   const [ firstChar ] = text;
   return !!(
     !text.includes('RT') &&
+    text.includes('earthquake') &&
     !text.includes('http') &&
     firstChar !== '@' &&
     firstChar !== '#' &&
